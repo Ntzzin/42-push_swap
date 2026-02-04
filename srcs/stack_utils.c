@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 12:51:12 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/03 13:59:05 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/04 13:56:49 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	ft_save(t_dbstack *dbstack, int i, int num)
 static void	ft_fill(t_dbstack *dbstack, char **nums)
 {
 	char	*tmp;
-	int 	num;
+	int		num;
 	int		i;
 	int		j;
 
