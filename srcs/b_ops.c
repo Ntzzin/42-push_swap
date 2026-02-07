@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   b_moves.c                                          :+:      :+:    :+:   */
+/*   b_ops.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 16:48:54 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/04 13:37:13 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/07 14:34:22 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	sb(t_dbstack *dbstack)
 {
 	int	tmp;
 
-	if (dbstack->a < 2)
+	if (dbstack->b_size < 2)
 		return ;
 	tmp = dbstack->stacks[0];
 	dbstack->stacks[0] = dbstack->stacks[1];
@@ -28,7 +28,7 @@ void	rb(t_dbstack *dbstack)
 	int	tmp;
 	int	i;
 
-	i = dbstack->a - 1;
+	i = dbstack->b_size - 1;
 	tmp = dbstack->stacks[i];
 	while (i > 0)
 	{
@@ -45,7 +45,7 @@ void	rrb(t_dbstack *dbstack)
 
 	i = 1;
 	tmp = dbstack->stacks[0];
-	while (i < dbstack->a)
+	while (i < dbstack->b_size)
 	{
 		dbstack->stacks[i - 1] = dbstack->stacks[i];
 		i++;
@@ -55,8 +55,8 @@ void	rrb(t_dbstack *dbstack)
 
 void	pb(t_dbstack *dbstack)
 {
-	if (dbstack->a >= dbstack->size)
+	if (dbstack->b_size >= dbstack->a_size + dbstack->b_size)
 		return ;
-	dbstack->a++;
-	rb(dbstack);
+	dbstack->b_size++;
+	dbstack->a_size--;
 }

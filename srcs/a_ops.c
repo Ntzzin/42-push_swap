@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   a_moves.c                                          :+:      :+:    :+:   */
+/*   a_ops.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 16:48:54 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/04 14:00:13 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/07 14:42:51 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	sa(t_dbstack *dbstack)
 {
 	int	tmp;
 
-	if ((dbstack->size - dbstack->a) < 2)
+	if (dbstack->a_size < 2)
 		return ;
-	tmp = dbstack->stacks[dbstack->a];
-	dbstack->stacks[dbstack->a] = dbstack->stacks[dbstack->a + 1];
-	dbstack->stacks[dbstack->a + 1] = tmp;
+	tmp = dbstack->stacks[dbstack->b_size];
+	dbstack->stacks[dbstack->b_size] = dbstack->stacks[dbstack->b_size + 1];
+	dbstack->stacks[dbstack->b_size + 1] = tmp;
 }
 
 void	ra(t_dbstack *dbstack)
@@ -28,24 +28,9 @@ void	ra(t_dbstack *dbstack)
 	int	tmp;
 	int	i;
 
-	i = dbstack->size - 1;
-	tmp = dbstack->stacks[i];
-	while (i > dbstack->a)
-	{
-		dbstack->stacks[i] = dbstack->stacks[i - 1];
-		i--;
-	}
-	dbstack->stacks[i] = tmp;
-}
-
-void	rra(t_dbstack *dbstack)
-{
-	int	tmp;
-	int	i;
-
-	i = dbstack->a + 1;
+	i = dbstack->b_size + 1;
 	tmp = dbstack->stacks[i - 1];
-	while (i < dbstack->size)
+	while (i < dbstack->a_size + dbstack->b_size)
 	{
 		dbstack->stacks[i - 1] = dbstack->stacks[i];
 		i++;
@@ -53,11 +38,25 @@ void	rra(t_dbstack *dbstack)
 	dbstack->stacks[i - 1] = tmp;
 }
 
+void	rra(t_dbstack *dbstack)
+{
+	int	tmp;
+	int	i;
+
+	i = dbstack->b_size + dbstack->a_size - 1;
+	tmp = dbstack->stacks[i];
+	while (i > dbstack->b_size)
+	{
+		dbstack->stacks[i] = dbstack->stacks[i - 1];
+		i--;
+	}
+	dbstack->stacks[i] = tmp;
+}
+
 void	pa(t_dbstack *dbstack)
 {
-	if (dbstack->a == 0)
+	if (dbstack->b_size == 0)
 		return ;
-	
-	rrb(dbstack);
-	dbstack->a--;
+	dbstack->b_size--;
+	dbstack->a_size++;
 }

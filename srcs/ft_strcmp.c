@@ -1,35 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/01 11:02:32 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/06 16:34:29 by nado-nas         ###   ########.fr       */
+/*   Created: 2026/02/06 16:26:24 by nado-nas          #+#    #+#             */
+/*   Updated: 2026/02/06 16:27:07 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <utils.h>
 
-int	ft_atoi(char **nptr)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	int		sign;
-	long	res;
+	size_t	i;
 
-	sign = 1;
-	res = 0;
-	while (**nptr == ' ' || (**nptr >= '\t' && **nptr <= '\r'))
-		(*nptr)++;
-	if (**nptr == '-' || **nptr == '+')
-		if (*(*nptr)++ == '-')
-			sign = -1;
-	while (**nptr >= '0' && **nptr <= '9')
-	{
-		res = (res * 10) + (**nptr - '0');
-		(*nptr)++;
-	}
-	if ((**nptr && **nptr != ' ') || res > INT_MAX || res < INT_MIN)
-		exit_and_free(NULL);
-	return (sign * res);
+	if (!s1 && !s2)
+		return (0);
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 12:22:52 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/04 14:05:23 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/07 17:36:18 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <string.h>
 #include <utils.h>
 
-void	ft_exit_and_free(void *p)
+void	exit_and_free(void *p)
 {
 	if (p)
 		free(p);
@@ -22,47 +22,9 @@ void	ft_exit_and_free(void *p)
 	exit(1);
 }
 
-void	ss(t_dbstack *dbstack)
+int	min(int a, int b)
 {
-	sa(dbstack);
-	sb(dbstack);
-}
-
-void	rr(t_dbstack *dbstack)
-{
-	ra(dbstack);
-	rb(dbstack);
-}
-
-void	rrr(t_dbstack *dbstack)
-{
-	rra(dbstack);
-	rr(dbstack);
-}
-
-void	do_op(t_dbstack *dbstack, char *op)
-{
-	ft_printf("%s\n", op);
-	if (!strcmp(op, "sa"))
-		sa(dbstack);
-	else if (!strcmp(op, "ra"))
-		ra(dbstack);
-	else if (!strcmp(op, "rra"))
-		rra(dbstack);
-	else if (!strcmp(op, "pa"))
-		pa(dbstack);
-	else if (!strcmp(op, "sb"))
-		sb(dbstack);
-	else if (!strcmp(op, "rb"))
-		rb(dbstack);
-	else if (!strcmp(op, "rrb"))
-		rrb(dbstack);
-	else if (!strcmp(op, "pb"))
-		pb(dbstack);
-	else if (!strcmp(op, "ss"))
-		ss(dbstack);
-	else if (!strcmp(op, "rr"))
-		rr(dbstack);
-	else if (!strcmp(op, "rrr"))
-		rrr(dbstack);
+	if (a < b)
+		return (a);
+	return (b);
 }
