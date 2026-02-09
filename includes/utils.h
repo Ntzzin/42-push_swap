@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:47:15 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/07 17:36:29 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/08 16:25:49 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,21 @@ void		rrb(t_dbstack *dbstack);
 void		pb(t_dbstack *dbstack);
 
 int			do_op(t_dbstack *dbstack, char *op);
+int			n_do_op(t_dbstack *dbstack, char *op, int n);
 
 /*───────────────────────────────────────────
 				Sort functions
 ─────────────────────────────────────────────*/
 int			calc_a_rotations(t_dbstack *dbstack, int i);
 int			calc_b_rotations(t_dbstack *dbstack, int i);
-int			b_max(t_dbstack *dbstack);
+int			calc_a_rotations2(t_dbstack *dbstack, int i);
+int			calc_b_rotations2(t_dbstack *dbstack, int i);
+int			get_max(int *a, int n);
+int			get_min(int *a, int n);
+int			precnum(int *a, int num, int n);
+int			precnum2(int *a, int num, int n);
+t_moves		lowest_cost(t_dbstack *dbstack);
+t_moves		lowest_cost2(t_dbstack *dbstack);
 int			sort(t_dbstack *dbstack);
 
 /*───────────────────────────────────────────

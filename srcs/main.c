@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 14:58:12 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/07 18:16:11 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/09 12:29:42 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv)
 	if (argc < 2)
 		exit_and_free(NULL);
 	dbstack = new_dbstack(argv);
-	ft_printf("\e[0;32mNew double stack created with size %d\e[0m\n", dbstack->a_size);
+	//ft_printf("\e[0;32mNew double stack created with size %d\e[0m\n", dbstack->a_size);
 	/*
 	while (i < dbstack->a_size + dbstack->b_size)
 	{
@@ -46,7 +46,7 @@ int	main(int argc, char **argv)
 		ft_printf("\e[0;35mFinal result is not sorted.\e[0m\n");
 	//printall(dbstack);
 	free(dbstack);
-	
+	return 0;
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 11:52:16 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/07 17:42:35 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/09 12:27:34 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	rrr(t_dbstack *dbstack)
 
 int	do_op(t_dbstack *dbstack, char *op)
 {
-	//ft_printf("%s\n", op);
+	ft_printf("%s\n", op);
 	if (!ft_strcmp(op, "sa"))
 		return(sa(dbstack), printall(dbstack), 1);
 	else if (!ft_strcmp(op, "ra"))
@@ -56,4 +56,17 @@ int	do_op(t_dbstack *dbstack, char *op)
 	else if (!ft_strcmp(op, "rrr"))
 		return(rrr(dbstack), printall(dbstack), 1);
 	return (0);
+}
+
+int	n_do_op(t_dbstack *dbstack, char *op, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+	{
+		do_op(dbstack, op);
+		i++;
+	}
+	return (n);
 }

@@ -6,122 +6,136 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 14:39:35 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/07 17:38:54 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/09 16:01:36 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <utils.h>
 
-static t_moves	moves(t_dbstack *dbstack, int i)
-{
-	t_moves	moves;
-	int		a_rtt;
-	int		b_rtt;
-
-	moves = (t_moves){0};
-	//ft_printf("\e[0;33mCost for %d\e[0m\n", dbstack->stacks[i]);
-	a_rtt = calc_a_rotations(dbstack, i);
-	//ft_printf("	a rot %d\n", a_rtt);
-	b_rtt = calc_b_rotations(dbstack, i);
-	//ft_printf("	b rot %d\n", b_rtt);
-	if (a_rtt < 0)
-		moves.rra = -a_rtt;
-	else
-		moves.ra = a_rtt;
-	if (b_rtt < 0)
-		moves.rrb = -b_rtt;
-	else
-		moves.rb = b_rtt;
-	if (moves.ra && moves.rb)
-		moves.rr = min(moves.ra, moves.rb);
-	else if (moves.rra && moves.rrb)
-		moves.rrr = min(moves.rra, moves.rrb);
-	//ft_printf("	rr rot %d\n", moves.rr);
-	//ft_printf("	rrr rot %d\n", moves.rrr);
-	moves.ra -= moves.rr;
-	moves.rra -= moves.rrr;
-	moves.rb -= moves.rr;
-	moves.rrb -= moves.rrr;
-	return (moves);
-}
-
-static int	cost(t_moves moves)
-{
-	return (moves.ra + moves.rra + moves.rb + moves.rrb + moves.rr + moves.rrr);
-}
-
-static t_moves	lowest_cost(t_dbstack *dbstack)
-{
-	int		i;
-	t_moves	min;
-	int curr;
-	int cmin;
-	int y;
-
-	i = dbstack->b_size + 1;
-	//ft_printf("LOWEST_COST MIN FIRST\n");
-	min = moves(dbstack, i - 1);
-	while (i < dbstack->b_size + dbstack->a_size)
-	{
-		//ft_printf("LOWEST_COST CURR\n");
-		curr = cost(moves(dbstack, i));
-		cmin = cost(min);
-		if (curr < cmin)
-		{
-			//ft_printf("LOWEST_COST MIN\n");
-			min = moves(dbstack, i);
-		}
-		i++;
-	}
-	return (min);
-}
-
 static int	process(t_moves moves, t_dbstack *dbstack)
 {
 	int	ops;
 
-	ops = cost(moves) + 1;
-	while (moves.ra--)
-		do_op(dbstack, RA);
-	while (moves.rra--)
-		do_op(dbstack, RRA);
-	while (moves.rb--)
-		do_op(dbstack, RB);
-	while (moves.rrb--)
-		do_op(dbstack, RRB);
-	while (moves.rr-- )
-		do_op(dbstack, RR);
-	while (moves.rrr--)
-		do_op(dbstack, RRR);
-	do_op(dbstack, PB);
+	ops = 0;
+	ops += n_do_op(dbstack, RA, moves.ra);
+	ops += n_do_op(dbstack, RRA, moves.rra);
+	ops += n_do_op(dbstack, RB, moves.rb);
+	ops += n_do_op(dbstack, RRB, moves.rrb);
+	ops += n_do_op(dbstack, RR, moves.rr);
+	ops += n_do_op(dbstack, RRR, moves.rrr);
+	ops += do_op(dbstack, PB);
 	return (ops);
+}
+
+static int	process2(t_moves moves, t_dbstack *dbstack)
+{
+	int	ops;
+
+	ops = 0;
+	ops += n_do_op(dbstack, RA, moves.ra);
+	ops += n_do_op(dbstack, RRA, moves.rra);
+	ops += n_do_op(dbstack, RB, moves.rb);
+	ops += n_do_op(dbstack, RRB, moves.rrb);
+	ops += n_do_op(dbstack, RR, moves.rr);
+	ops += n_do_op(dbstack, RRR, moves.rrr);
+	ops += do_op(dbstack, PA);
+	return (ops);
+}
+
+static int	sort_last_3(t_dbstack *dbstack)
+{
+	int	*a;
+	int	ops;
+
+	a = &(dbstack->stacks[dbstack->b_size]);
+	ops = 0;
+	ft_printf("\e[0;36mSorting the 3 last elements in a...\e[0m\n");
+	if (get_max(a, dbstack->a_size) == 0)
+		ops += do_op(dbstack, RA);
+	else if (get_max(a, dbstack->a_size) == 1)
+		ops += do_op(dbstack, RRA);
+	if (a[0] > a[1])
+		ops += do_op(dbstack, SA);
+	return (ops);
+}
+/*
+static int	push_back(t_dbstack *dbstack)
+{
+	int	ops;
+
+	ops = 0;
+	while (dbstack->b_size > 0)
+	{
+		tmp = precnum2(&(dbstack->stacks[dbstack->b_size]),dbstack->stacks[dbstack->b_size - 1], dbstack->a_size);
+		//ft_printf("prec for %d is at %d\n", dbstack->stacks[dbstack->b_size - 1], tmp);
+		if (tmp == -1){
+			
+			tmp = get_min(&(dbstack->stacks[dbstack->b_size]), dbstack->a_size);
+			//ft_printf("	reassigning prec to %d\n", tmp);
+		}
+			
+		
+		if (tmp > dbstack->a_size / 2)
+			ops += n_do_op(dbstack, RRA, dbstack->a_size - tmp);
+		else
+			ops += n_do_op(dbstack, RA, tmp);
+		ops += do_op(dbstack, PA);
+			
+	}
 }
 
 int	sort(t_dbstack *dbstack)
 {
-	t_moves	todo;
 	int ops;
-	int max;
+	int	min;
+	int	tmp;
 
 	ops = 0;
+	min = 0;
+	while (dbstack->a_size > 3)
+		ops += process(lowest_cost(dbstack), dbstack);
+	ops += sort_last_3(dbstack);
+	ft_printf("\e[0;36mPushing everything back to a...\e[0m\n");
+	
+	while (dbstack->b_size > 0)
+		ops += process2(lowest_cost2(dbstack), dbstack);
+	
+	/*
+	while (dbstack->b_size > 0)
+	{
+		tmp = precnum2(&(dbstack->stacks[dbstack->b_size]),dbstack->stacks[dbstack->b_size - 1], dbstack->a_size);
+		//ft_printf("prec for %d is at %d\n", dbstack->stacks[dbstack->b_size - 1], tmp);
+		if (tmp == -1){
+			
+			tmp = get_min(&(dbstack->stacks[dbstack->b_size]), dbstack->a_size);
+			//ft_printf("	reassigning prec to %d\n", tmp);
+		}
+			
+		
+		if (tmp > dbstack->a_size / 2)
+			ops += n_do_op(dbstack, RRA, dbstack->a_size - tmp);
+		else
+			ops += n_do_op(dbstack, RA, tmp);
+		ops += do_op(dbstack, PA);
+			
+	}
+		*/
+	//sft_printf("\e[0;36mRotating a...\e[0m\n");
+	//ft_printf("%d ops\n", ops);
+	min = get_min(dbstack->stacks, dbstack->a_size);
+	//ft_printf("%d ops\n", ops);
+	if (min > dbstack->a_size / 2)
+		ops	+= n_do_op(dbstack, RRA, dbstack->a_size - min);
+	else
+		ops	+= n_do_op(dbstack, RA, min);
+	return (ops);
+}
+
+/*
 	if (dbstack->a_size > 1)
 	{
 		do_op(dbstack, PB);
 		do_op(dbstack, PB);
 		ops += 2;
 	}
-	while (dbstack->a_size)
-		ops += process(lowest_cost(dbstack), dbstack);
-	while (dbstack->b_size)
-	{
-		max = dbstack->b_size - 1 - b_max(dbstack);
-		if (!max)
-			do_op(dbstack, PA);
-		else if (max > dbstack->b_size / 2)
-			do_op(dbstack, RRB);
-		else
-			do_op(dbstack, RB);
-		ops++;
-	}
-	return (ops);
-}
+	*/
