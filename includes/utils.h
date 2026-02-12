@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:47:15 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/08 16:25:49 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/12 14:36:56 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,9 @@ typedef struct s_dbstack
 
 typedef struct s_moves
 {
-	int		ra;
-	int		rra;
-	int		rb;
-	int		rrb;
-	int		rr;
-	int		rrr;
+	int		a_rtt;
+	int		b_rtt;
+	int		s_rtt;
 }			t_moves;
 
 /*───────────────────────────────────────────
@@ -71,12 +68,16 @@ int			n_do_op(t_dbstack *dbstack, char *op, int n);
 ─────────────────────────────────────────────*/
 int			calc_a_rotations(t_dbstack *dbstack, int i);
 int			calc_b_rotations(t_dbstack *dbstack, int i);
-int			calc_a_rotations2(t_dbstack *dbstack, int i);
-int			calc_b_rotations2(t_dbstack *dbstack, int i);
 int			get_max(int *a, int n);
 int			get_min(int *a, int n);
-int			precnum(int *a, int num, int n);
-int			precnum2(int *a, int num, int n);
+int			pos_in_a(t_dbstack *dbstack, int i);
+int			get_b_predecessor(t_dbstack *dbstack, int idx);
+int			get_a_successor(t_dbstack *dbstack, int idx);
+int			r_to_top_a(t_dbstack *dbstack, int i);
+int			r_to_top_a2(t_dbstack *dbstack, int i);
+int			r_to_top_b(t_dbstack *dbstack, int i);
+t_moves		moves(t_dbstack *dbstack, int i);
+t_moves		moves2(t_dbstack *dbstack, int i);
 t_moves		lowest_cost(t_dbstack *dbstack);
 t_moves		lowest_cost2(t_dbstack *dbstack);
 int			sort(t_dbstack *dbstack);
@@ -86,6 +87,7 @@ int			sort(t_dbstack *dbstack);
 ─────────────────────────────────────────────*/
 int			ft_atoi(char **nptr);
 int			ft_strcmp(const char *s1, const char *s2);
+int			ft_abs(int n);
 int			min(int a, int b);
 void		exit_and_free(void *p);
 

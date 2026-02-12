@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 14:58:12 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/09 12:29:42 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/12 12:10:18 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	main(int argc, char **argv)
 	if (argc < 2)
 		exit_and_free(NULL);
 	dbstack = new_dbstack(argv);
-	//ft_printf("\e[0;32mNew double stack created with size %d\e[0m\n", dbstack->a_size);
+	// ft_printf("\e[0;32mNew double stack created with size %d\e[0m\n",
+		//dbstack->a_size);
 	/*
 	while (i < dbstack->a_size + dbstack->b_size)
 	{
@@ -33,25 +34,31 @@ int	main(int argc, char **argv)
 	}
 	*/
 	ft_printf("\e[0;34mSorting...\e[0m\n");
+	printall(dbstack);
 	ops = sort(dbstack);
 	if (is_sorted(dbstack))
 	{
 		ft_printf("\e[0;32mSorted all using\e[0m", ops);
-		if ((dbstack->a_size == 100 && ops < 700) || (dbstack->a_size == 500 && ops < 5500) || (dbstack->a_size != 500 && dbstack->a_size != 100))
+		if ((dbstack->a_size == 100 && ops < 700) || (dbstack->a_size == 500
+				&& ops < 5500) || (dbstack->a_size != 500
+				&& dbstack->a_size != 100))
 			ft_printf("\e[0;36m %d \e[0m", ops);
 		else
 			ft_printf("\e[0;35m %d \e[0m", ops);
 		ft_printf("\e[0;32moperations\e[0m\n");
-	}else
+	}
+	else{
 		ft_printf("\e[0;35mFinal result is not sorted.\e[0m\n");
-	//printall(dbstack);
+		return (1);
+	}
+		
+	// printall(dbstack);
 	free(dbstack);
-	return 0;
+	return (0);
 }
 
-
 /*
-int main(int argc, char **argv){
+int	main(int argc, char **argv){
 	int			i;
 	t_dbstack	*dbstack;
 	char		buffer[4];

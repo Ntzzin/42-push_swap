@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 12:22:52 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/07 17:36:18 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/09 16:22:22 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,11 @@ int	min(int a, int b)
 	if (a < b)
 		return (a);
 	return (b);
+}
+
+int	ft_abs(int n)
+{
+	if (n < 0)
+		return (-n);
+	return (n);
 }

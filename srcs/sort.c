@@ -6,40 +6,40 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 14:39:35 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/09 16:01:36 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/12 14:43:02 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <utils.h>
 
-static int	process(t_moves moves, t_dbstack *dbstack)
+static int	do_moves(t_moves moves, t_dbstack *dbstack)
 {
 	int	ops;
 
 	ops = 0;
-	ops += n_do_op(dbstack, RA, moves.ra);
-	ops += n_do_op(dbstack, RRA, moves.rra);
-	ops += n_do_op(dbstack, RB, moves.rb);
-	ops += n_do_op(dbstack, RRB, moves.rrb);
-	ops += n_do_op(dbstack, RR, moves.rr);
-	ops += n_do_op(dbstack, RRR, moves.rrr);
-	ops += do_op(dbstack, PB);
+	if (moves.a_rtt > 0)
+		ops += n_do_op(dbstack, RA, moves.a_rtt);
+	else
+		ops += n_do_op(dbstack, RRA, -moves.a_rtt);
+	if (moves.b_rtt > 0)
+		ops += n_do_op(dbstack, RB, moves.b_rtt);
+	else
+		ops += n_do_op(dbstack, RRB, -moves.b_rtt);
+	if (moves.s_rtt > 0)
+		ops += n_do_op(dbstack, RR, moves.s_rtt);
+	else
+		ops += n_do_op(dbstack, RRR, -moves.s_rtt);
 	return (ops);
 }
 
-static int	process2(t_moves moves, t_dbstack *dbstack)
+static int	push_to_b(t_moves moves, t_dbstack *dbstack)
 {
-	int	ops;
+	return (do_moves(moves, dbstack) + do_op(dbstack, PB));
+}
 
-	ops = 0;
-	ops += n_do_op(dbstack, RA, moves.ra);
-	ops += n_do_op(dbstack, RRA, moves.rra);
-	ops += n_do_op(dbstack, RB, moves.rb);
-	ops += n_do_op(dbstack, RRB, moves.rrb);
-	ops += n_do_op(dbstack, RR, moves.rr);
-	ops += n_do_op(dbstack, RRR, moves.rrr);
-	ops += do_op(dbstack, PA);
-	return (ops);
+static int	push_to_a(t_moves moves, t_dbstack *dbstack)
+{
+	return (do_moves(moves, dbstack) + do_op(dbstack, PA));
 }
 
 static int	sort_last_3(t_dbstack *dbstack)
@@ -62,48 +62,45 @@ static int	sort_last_3(t_dbstack *dbstack)
 static int	push_back(t_dbstack *dbstack)
 {
 	int	ops;
+	int	suc;
 
 	ops = 0;
 	while (dbstack->b_size > 0)
 	{
-		tmp = precnum2(&(dbstack->stacks[dbstack->b_size]),dbstack->stacks[dbstack->b_size - 1], dbstack->a_size);
-		//ft_printf("prec for %d is at %d\n", dbstack->stacks[dbstack->b_size - 1], tmp);
-		if (tmp == -1){
-			
-			tmp = get_min(&(dbstack->stacks[dbstack->b_size]), dbstack->a_size);
-			//ft_printf("	reassigning prec to %d\n", tmp);
-		}
-			
-		
-		if (tmp > dbstack->a_size / 2)
-			ops += n_do_op(dbstack, RRA, dbstack->a_size - tmp);
+		suc = sucnum(&(dbstack->stacks[dbstack->b_size]),
+				dbstack->stacks[dbstack->b_size - 1], dbstack->a_size);
+		if (suc > dbstack->a_size / 2)
+			ops += n_do_op(dbstack, RRA, dbstack->a_size - suc);
 		else
-			ops += n_do_op(dbstack, RA, tmp);
+			ops += n_do_op(dbstack, RA, suc);
 		ops += do_op(dbstack, PA);
-			
 	}
+	return (ops);
 }
+	*/
 
 int	sort(t_dbstack *dbstack)
 {
-	int ops;
+	int	ops;
 	int	min;
 	int	tmp;
 
 	ops = 0;
 	min = 0;
+	if (dbstack->a_size >= 5)
+		ops += n_do_op(dbstack, PB, 2);
 	while (dbstack->a_size > 3)
-		ops += process(lowest_cost(dbstack), dbstack);
+		ops += push_to_b(lowest_cost(dbstack), dbstack);
 	ops += sort_last_3(dbstack);
-	ft_printf("\e[0;36mPushing everything back to a...\e[0m\n");
 	
-	while (dbstack->b_size > 0)
-		ops += process2(lowest_cost2(dbstack), dbstack);
-	
+	while (dbstack->b_size)
+		ops += push_to_a(lowest_cost2(dbstack), dbstack);
+		
+		
 	/*
 	while (dbstack->b_size > 0)
 	{
-		tmp = precnum2(&(dbstack->stacks[dbstack->b_size]),dbstack->stacks[dbstack->b_size - 1], dbstack->a_size);
+		tmp = sucnum(&(dbstack->stacks[dbstack->b_size]),dbstack->stacks[dbstack->b_size - 1], dbstack->a_size);
 		//ft_printf("prec for %d is at %d\n", dbstack->stacks[dbstack->b_size - 1], tmp);
 		if (tmp == -1){
 			
@@ -120,22 +117,13 @@ int	sort(t_dbstack *dbstack)
 			
 	}
 		*/
-	//sft_printf("\e[0;36mRotating a...\e[0m\n");
-	//ft_printf("%d ops\n", ops);
-	min = get_min(dbstack->stacks, dbstack->a_size);
-	//ft_printf("%d ops\n", ops);
-	if (min > dbstack->a_size / 2)
-		ops	+= n_do_op(dbstack, RRA, dbstack->a_size - min);
+	//ops += push_back(dbstack);
+	int x;
+	x = r_to_top_a(dbstack, get_min(dbstack->stacks, dbstack->a_size));
+	//min = get_min(dbstack->stacks, dbstack->a_size);
+	if (x < 0)
+		ops += n_do_op(dbstack, RRA, -x);
 	else
-		ops	+= n_do_op(dbstack, RA, min);
+		ops += n_do_op(dbstack, RA, x);
 	return (ops);
 }
-
-/*
-	if (dbstack->a_size > 1)
-	{
-		do_op(dbstack, PB);
-		do_op(dbstack, PB);
-		ops += 2;
-	}
-	*/

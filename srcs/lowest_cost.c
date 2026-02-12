@@ -6,131 +6,78 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 14:46:20 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/09 15:59:12 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/12 14:38:47 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <utils.h>
 
-static t_moves	moves(t_dbstack *dbstack, int i)
+t_moves	moves_ult(t_dbstack *dbstack, int i, int (*calc_a_target) (t_dbstack*, int), int (*calc_b_target) (t_dbstack*, int))
 {
 	t_moves	moves;
-	int		a_rtt;
-	int		b_rtt;
+	int		a;
+	int		b;
 
 	moves = (t_moves){0};
-	//ft_printf("\e[0;33mCost for %d\e[0m\n", dbstack->stacks[i]);
-	a_rtt = calc_a_rotations(dbstack, i);
-	//ft_printf("	a rot %d\n", a_rtt);
-	b_rtt = calc_b_rotations(dbstack, i);
-	//ft_printf("	b rot %d\n", b_rtt);
-	if (a_rtt < 0)
-		moves.rra = -a_rtt;
+	if (calc_a_target)
+		a = calc_a_target(dbstack, i);
 	else
-		moves.ra = a_rtt;
-	if (b_rtt < 0)
-		moves.rrb = -b_rtt;
+		a = i;
+	if (calc_b_target)
+		b = calc_b_target(dbstack, i);
 	else
-		moves.rb = b_rtt;
-	if (moves.ra && moves.rb)
-		moves.rr = min(moves.ra, moves.rb);
-	else if (moves.rra && moves.rrb)
-		moves.rrr = min(moves.rra, moves.rrb);
-	//ft_printf("	rr rot %d\n", moves.rr);
-	//ft_printf("	rrr rot %d\n", moves.rrr);
-	moves.ra -= moves.rr;
-	moves.rra -= moves.rrr;
-	moves.rb -= moves.rr;
-	moves.rrb -= moves.rrr;
-	return (moves);
-}
-
-static t_moves	moves2(t_dbstack *dbstack, int i)
-{
-	t_moves	moves;
-	int		a_rtt;
-	int		b_rtt;
-
-	moves = (t_moves){0};
-	//ft_printf("\e[0;33mCost for %d\e[0m\n", dbstack->stacks[i]);
-	a_rtt = calc_a_rotations2(dbstack, i);
-	//ft_printf("	a rot %d\n", a_rtt);
-	b_rtt = calc_b_rotations2(dbstack, i);
-	//ft_printf("	b rot %d\n", b_rtt);
-	if (a_rtt < 0)
-		moves.rra = -a_rtt;
-	else
-		moves.ra = a_rtt;
-	if (b_rtt < 0)
-		moves.rrb = -b_rtt;
-	else
-		moves.rb = b_rtt;
-	if (moves.ra && moves.rb)
-		moves.rr = min(moves.ra, moves.rb);
-	else if (moves.rra && moves.rrb)
-		moves.rrr = min(moves.rra, moves.rrb);
-	//ft_printf("	rr rot %d\n", moves.rr);
-	//ft_printf("	rrr rot %d\n", moves.rrr);
-	moves.ra -= moves.rr;
-	moves.rra -= moves.rrr;
-	moves.rb -= moves.rr;
-	moves.rrb -= moves.rrr;
+		b = i;
+	moves.a_rtt = r_to_top_a(dbstack, a);
+	moves.b_rtt = r_to_top_b(dbstack, b);
+	if (moves.a_rtt > 0 && moves.b_rtt > 0)
+		moves.s_rtt = min(moves.a_rtt, moves.b_rtt);
+	else if (moves.a_rtt < 0 && moves.b_rtt < 0)
+		moves.s_rtt = -min(-moves.a_rtt, -moves.b_rtt);
+	moves.a_rtt -= moves.s_rtt;
+	moves.b_rtt -= moves.s_rtt;
 	return (moves);
 }
 
 static int	cost(t_moves moves)
 {
-	return (moves.ra + moves.rra + moves.rb + moves.rrb + moves.rr + moves.rrr);
+	return (ft_abs(moves.a_rtt) + ft_abs(moves.b_rtt) + ft_abs(moves.s_rtt));
 }
 
-t_moves	a_to_b_l_cost(t_dbstack *dbstack)
+t_moves	lowest_cost(t_dbstack *dbstack)
 {
-	int		i;
 	t_moves	min;
-	int curr;
-	int cmin;
-	int y;
+	int		i;
+	int		curr;
+	int		cmin;
 
 	i = dbstack->b_size + 1;
-	//ft_printf("LOWEST_COST MIN FIRST\n");
-	min = moves(dbstack, i - 1);
+	min = moves_ult(dbstack, i - 1, pos_in_a, get_b_predecessor);
 	while (i < dbstack->b_size + dbstack->a_size)
 	{
-		//ft_printf("LOWEST_COST CURR\n");
-		curr = cost(moves(dbstack, i));
+		curr = cost(moves_ult(dbstack, i, pos_in_a, get_b_predecessor));
 		cmin = cost(min);
 		if (curr < cmin)
-		{
-			//ft_printf("LOWEST_COST MIN\n");
-			min = moves(dbstack, i);
-		}
+			min = moves_ult(dbstack, i, pos_in_a, get_b_predecessor);
 		i++;
 	}
-	//ft_printf("LOWEST_COST MIN IS %d\n", min);
 	return (min);
 }
 
-t_moves	b_to_a_l_cost(t_dbstack *dbstack)
+t_moves	lowest_cost2(t_dbstack *dbstack)
 {
-	int		i;
 	t_moves	min;
-	int curr;
-	int cmin;
-	int y;
+	int		i;
+	int		curr;
+	int		cmin;
 
-	i = dbstack->b_size - 2;
-	//ft_printf("LOWEST_COST MIN FIRST\n");
-	min = moves2(dbstack, i + 1);
-	while (i > 0)
-	{
-		//ft_printf("LOWEST_COST CURR\n");
-		curr = cost(moves2(dbstack, i));
+	i =  dbstack->b_size - 2;
+	min = moves_ult(dbstack, i + 1, get_a_successor, NULL);
+	while (i >= 0)
+	{//1
+		curr = cost(moves_ult(dbstack, i, get_a_successor, NULL));
 		cmin = cost(min);
 		if (curr < cmin)
-		{
-			//ft_printf("LOWEST_COST MIN\n");
-			min = moves2(dbstack, i);
-		}
+			min = moves_ult(dbstack, i, get_a_successor, NULL);
 		i--;
 	}
 	return (min);

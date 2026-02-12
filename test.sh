@@ -40,11 +40,24 @@ while [ $COUNT -lt $TESTS ]; do
     SEEN[$ARG]=1
     COUNT=$((COUNT + 1))
 
-	progress_bar $COUNT $TESTS
+	
 	#./push_swap $ARG
-    RES=$( ./push_swap $ARG | wc -l)
+	./push_swap $ARG > push
+	if [[ !$? -eq 0 ]]; then
+		echo "ERROR: FINAL RESULT NOT SORTED"
+    	exit
+	fi
+
+	progress_bar $COUNT $TESTS
+    RES=$(wc -l < push)
+	if [[ $RES -eq 0 ]]; then
+    	exit
+	fi
     OPS=$(($RES - 4))
 
+	if [[ ( $NUMBERS -eq 100 && $OPS -gt 700 ) || ( $NUMBERS -eq 500 && $OPS -gt 5500 ) ]]; then
+    	FAILED=$((FAILED + 1))
+	fi
     TOTAL_OPS=$((TOTAL_OPS + OPS))
 
     if [ $MIN_OPS -eq -1 ] || [ $OPS -lt $MIN_OPS ]; then
