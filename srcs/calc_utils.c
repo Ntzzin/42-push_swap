@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 14:39:35 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/12 14:36:43 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/12 14:50:58 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,35 +41,35 @@ int	get_min(int *a, int n)
 int	get_b_predecessor(t_dbstack *dbstack, int idx)
 {
 	int	i;
-	int	prec;
+	int	pre;
 	int	*b;
 
 	i = -1;
-	prec = -1;
+	pre = -1;
 	b = dbstack->stacks;
 	while (++i < dbstack->b_size)
-		if (b[i] < dbstack->stacks[idx] && (prec == -1 || b[i] > b[prec]))
-			prec = i;
-	if (prec == -1)
-		prec = get_max(b, dbstack->b_size);
-	return (prec);
+		if (b[i] < dbstack->stacks[idx] && (pre == -1 || b[i] > b[pre]))
+			pre = i;
+	if (pre == -1)
+		pre = get_max(b, dbstack->b_size);
+	return (pre);
 }
 
 int	get_a_successor(t_dbstack *dbstack, int idx)
 {
 	int	i;
-	int	res;
+	int	suc;
 	int	*a;
 
 	i = -1;
-	res = -1;
+	suc = -1;
 	a = &(dbstack->stacks[dbstack->b_size]);
 	while (++i < dbstack->a_size)
-		if (a[i] > dbstack->stacks[idx] && (res == -1 || a[i] < a[res]))
-			res = i;
-	if (res == -1)
-		res = get_min(a, dbstack->a_size);
-	return (res);
+		if (a[i] > dbstack->stacks[idx] && (suc == -1 || a[i] < a[suc]))
+			suc = i;
+	if (suc == -1)
+		suc = get_min(a, dbstack->a_size);
+	return (suc);
 }
 
 int	pos_in_b(t_dbstack *dbstack, int i){
@@ -82,15 +82,6 @@ int	pos_in_a(t_dbstack *dbstack, int i){
 
 int	r_to_top_a(t_dbstack *dbstack, int i)
 {
-	//i = i - dbstack->b_size;
-	if (i > dbstack->a_size / 2)
-		return (i - dbstack->a_size);
-	return (i);
-}
-
-int	r_to_top_a2(t_dbstack *dbstack, int i)
-{
-	i = i - dbstack->b_size;
 	if (i > dbstack->a_size / 2)
 		return (i - dbstack->a_size);
 	return (i);
@@ -102,13 +93,4 @@ int	r_to_top_b(t_dbstack *dbstack, int i)
 	if (i > dbstack->b_size / 2)
 		return (i - dbstack->b_size);
 	return (i);
-}
-
-int	calc_a_rotations(t_dbstack *dbstack, int i)
-{
-	return (r_to_top_a(dbstack, i));
-}
-int	calc_b_rotations(t_dbstack *dbstack, int i)
-{
-	return (r_to_top_b(dbstack, i));
 }

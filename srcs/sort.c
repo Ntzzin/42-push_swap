@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 14:39:35 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/12 14:43:02 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/12 16:10:02 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,21 @@ static int	push_back(t_dbstack *dbstack)
 }
 	*/
 
+static int	rotate_a_till_sorted(t_dbstack *dbstack)
+{
+	int	ops;
+	int	rtt;
+
+	ops = 0;
+	rtt = r_to_top_a(dbstack, get_min(dbstack->stacks, dbstack->a_size));
+	if (rtt < 0)
+		ops += n_do_op(dbstack, RRA, -rtt);
+	else
+		ops += n_do_op(dbstack, RA, rtt);
+	return (ops);
+}
+	
+
 int	sort(t_dbstack *dbstack)
 {
 	int	ops;
@@ -90,40 +105,10 @@ int	sort(t_dbstack *dbstack)
 	if (dbstack->a_size >= 5)
 		ops += n_do_op(dbstack, PB, 2);
 	while (dbstack->a_size > 3)
-		ops += push_to_b(lowest_cost(dbstack), dbstack);
+		ops += push_to_b(lowest_cost_a_to_b(dbstack), dbstack);
 	ops += sort_last_3(dbstack);
-	
 	while (dbstack->b_size)
-		ops += push_to_a(lowest_cost2(dbstack), dbstack);
-		
-		
-	/*
-	while (dbstack->b_size > 0)
-	{
-		tmp = sucnum(&(dbstack->stacks[dbstack->b_size]),dbstack->stacks[dbstack->b_size - 1], dbstack->a_size);
-		//ft_printf("prec for %d is at %d\n", dbstack->stacks[dbstack->b_size - 1], tmp);
-		if (tmp == -1){
-			
-			tmp = get_min(&(dbstack->stacks[dbstack->b_size]), dbstack->a_size);
-			//ft_printf("	reassigning prec to %d\n", tmp);
-		}
-			
-		
-		if (tmp > dbstack->a_size / 2)
-			ops += n_do_op(dbstack, RRA, dbstack->a_size - tmp);
-		else
-			ops += n_do_op(dbstack, RA, tmp);
-		ops += do_op(dbstack, PA);
-			
-	}
-		*/
-	//ops += push_back(dbstack);
-	int x;
-	x = r_to_top_a(dbstack, get_min(dbstack->stacks, dbstack->a_size));
-	//min = get_min(dbstack->stacks, dbstack->a_size);
-	if (x < 0)
-		ops += n_do_op(dbstack, RRA, -x);
-	else
-		ops += n_do_op(dbstack, RA, x);
+		ops += push_to_a(lowest_cost_b_to_a(dbstack), dbstack);
+	ops += rotate_a_till_sorted(dbstack);
 	return (ops);
 }
