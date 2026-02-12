@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 12:51:12 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/07 15:19:28 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/12 16:23:11 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ t_dbstack	*new_dbstack(char **nums)
 	size = get_size(nums);
 	dbstack = malloc(sizeof(int) * (2 + size));
 	if (!dbstack)
-		exit_and_free(dbstack);
+		exit_and_free(NULL);
 	dbstack->a_size = size;
 	dbstack->b_size = 0;
 	fill(dbstack, nums);
