@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 14:46:20 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/14 14:32:35 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/14 15:07:55 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,22 @@ t_moves	moves(t_dbstack *dbstack, int idx, int (*calc_a_target)(t_dbstack *, int
 }
 
 /**
- * @brief Calculates the total number of moves of a given set of
+ * @brief Calculates the total number of operations
+ * needed to complete a set of moves.
  * @param moves The structure containing the moves.
- * @return The sum of all m.
+ * @return The total cost in order to execute all the moves.
  */
 static int	cost(t_moves moves)
 {
 	return (ft_abs(moves.a_rtt) + ft_abs(moves.b_rtt) + ft_abs(moves.s_rtt));
 }
 
+/**
+ * @brief Searches for the element in stack a with the lowest 
+ * cost in moves to be correctly positioned in stack b.
+ * @param dbstack The address of the double stack.
+ * @return The data about the moves of said lowest-cost element.
+ */
 t_moves	lowest_cost_a_to_b(t_dbstack *dbstack)
 {
 	t_moves	min;
@@ -80,6 +87,12 @@ t_moves	lowest_cost_a_to_b(t_dbstack *dbstack)
 	return (min);
 }
 
+/**
+ * @brief Searches for the element in stack b with the lowest 
+ * cost in moves to be correctly positioned in stack a.
+ * @param dbstack The address of the double stack.
+ * @return The data about the moves of said lowest-cost element.
+ */
 t_moves	lowest_cost_b_to_a(t_dbstack *dbstack)
 {
 	t_moves	min;
