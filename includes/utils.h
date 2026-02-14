@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:47:15 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/12 16:09:50 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/14 13:31:12 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,14 @@ int			n_do_op(t_dbstack *dbstack, char *op, int n);
 /*───────────────────────────────────────────
 				Sort functions
 ─────────────────────────────────────────────*/
-int			get_max(int *a, int n);
-int			get_min(int *a, int n);
-int			pos_in_a(t_dbstack *dbstack, int i);
+int			get_b_max(t_dbstack *dbstack);
+int			get_a_min(t_dbstack *dbstack);
+int			pos_in_a(t_dbstack *dbstack, int idx);
+int			pos_in_b(t_dbstack *dbstack, int idx);
 int			get_b_predecessor(t_dbstack *dbstack, int idx);
 int			get_a_successor(t_dbstack *dbstack, int idx);
-int			r_to_top_a(t_dbstack *dbstack, int i);
-int			r_to_top_b(t_dbstack *dbstack, int i);
+int			r_to_top_a(t_dbstack *dbstack, int idx);
+int			r_to_top_b(t_dbstack *dbstack, int idx);
 t_moves		lowest_cost_a_to_b(t_dbstack *dbstack);
 t_moves		lowest_cost_b_to_a(t_dbstack *dbstack);
 int			sort(t_dbstack *dbstack);

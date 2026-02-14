@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 14:39:35 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/12 16:10:02 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/14 12:57:08 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,34 +50,14 @@ static int	sort_last_3(t_dbstack *dbstack)
 	a = &(dbstack->stacks[dbstack->b_size]);
 	ops = 0;
 	ft_printf("\e[0;36mSorting the 3 last elements in a...\e[0m\n");
-	if (get_max(a, dbstack->a_size) == 0)
+	if (a[0] > a[1] && a[0] > a[2])
 		ops += do_op(dbstack, RA);
-	else if (get_max(a, dbstack->a_size) == 1)
+	else if (a[1] > a[0] && a[1] > a[2])
 		ops += do_op(dbstack, RRA);
 	if (a[0] > a[1])
 		ops += do_op(dbstack, SA);
 	return (ops);
 }
-/*
-static int	push_back(t_dbstack *dbstack)
-{
-	int	ops;
-	int	suc;
-
-	ops = 0;
-	while (dbstack->b_size > 0)
-	{
-		suc = sucnum(&(dbstack->stacks[dbstack->b_size]),
-				dbstack->stacks[dbstack->b_size - 1], dbstack->a_size);
-		if (suc > dbstack->a_size / 2)
-			ops += n_do_op(dbstack, RRA, dbstack->a_size - suc);
-		else
-			ops += n_do_op(dbstack, RA, suc);
-		ops += do_op(dbstack, PA);
-	}
-	return (ops);
-}
-	*/
 
 static int	rotate_a_till_sorted(t_dbstack *dbstack)
 {
@@ -85,14 +65,13 @@ static int	rotate_a_till_sorted(t_dbstack *dbstack)
 	int	rtt;
 
 	ops = 0;
-	rtt = r_to_top_a(dbstack, get_min(dbstack->stacks, dbstack->a_size));
+	rtt = r_to_top_a(dbstack, get_a_min(dbstack));
 	if (rtt < 0)
 		ops += n_do_op(dbstack, RRA, -rtt);
 	else
 		ops += n_do_op(dbstack, RA, rtt);
 	return (ops);
 }
-	
 
 int	sort(t_dbstack *dbstack)
 {
