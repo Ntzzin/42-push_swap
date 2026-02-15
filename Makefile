@@ -6,7 +6,7 @@
 #    By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/19 15:58:54 by nado-nas          #+#    #+#              #
-#    Updated: 2026/02/15 18:48:56 by nado-nas         ###   ########.fr        #
+#    Updated: 2026/02/15 18:52:06 by nado-nas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CC = cc
 INCLUDE = -Iincludes
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = srcs/push_swap.c srcs/misc.c srcs/stack_utils.c srcs/ft_atoi.c srcs/a_ops.c srcs/b_ops.c \
+SRC = srcs/push_swap.c srcs/misc.c srcs/stack_utils.c srcs/parse.c srcs/a_ops.c srcs/b_ops.c \
 srcs/calc_utils.c srcs/dbstack.c srcs/sort.c srcs/ft_strcmp.c srcs/lowest_cost.c srcs/r_to_top.c
 BSRC = srcs/checker.c srcs/misc.c srcs/stack_utils.c srcs/ft_atoi.c srcs/a_ops.c srcs/b_ops.c \
 srcs/dbstack.c srcs/ft_strcmp.c srcs/is_sorted.c
