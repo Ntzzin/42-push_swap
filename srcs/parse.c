@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 11:02:32 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/15 17:04:29 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/15 18:57:10 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
  * with extra functionalities, for instance it quits if the
  * passed string is not a valid number input for atoi(3).
  * @param nptr The address of the string.
- * @return The number that the string represents
- * @warning This function 
+ * @return The number that the string represents.
+ * @warning This function **advances the pointer** passed to it
+ * (i.e., it updates the value of `*nptr` during execution).
 */
 int	parse(char **nptr)
 {

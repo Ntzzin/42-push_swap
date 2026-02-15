@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 15:30:12 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/15 16:15:30 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/15 19:05:15 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,10 @@ static void	remove_nl(char *line)
 {
 	int	i;
 
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '\n')
-		{
-			line[i] = '\0';
-			return ;
-		}
-		i++;
-	}
+	i = -1;
+	while (line[++i] != '\n')
+	;
+	line[i] = '\0';
 }
 
 int	main(int argc, char **argv)
