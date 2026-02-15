@@ -6,43 +6,44 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 14:39:35 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/14 12:57:08 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/15 15:24:20 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <utils.h>
 
-static int	do_moves(t_moves moves, t_dbstack *dbstack)
-{
-	int	ops;
-
-	ops = 0;
-	if (moves.a_rtt > 0)
-		ops += n_do_op(dbstack, RA, moves.a_rtt);
-	else
-		ops += n_do_op(dbstack, RRA, -moves.a_rtt);
-	if (moves.b_rtt > 0)
-		ops += n_do_op(dbstack, RB, moves.b_rtt);
-	else
-		ops += n_do_op(dbstack, RRB, -moves.b_rtt);
-	if (moves.s_rtt > 0)
-		ops += n_do_op(dbstack, RR, moves.s_rtt);
-	else
-		ops += n_do_op(dbstack, RRR, -moves.s_rtt);
-	return (ops);
-}
-
+/**
+ * @brief Executes a set of moves based on the defined t_moves structure, 
+ * finalized by a push to stack b.
+ * @param moves The structure containing the moves.
+ * @param dbstack The address of the double stack.
+ * @return The number of moves executed.
+*/
 static int	push_to_b(t_moves moves, t_dbstack *dbstack)
 {
 	return (do_moves(moves, dbstack) + do_op(dbstack, PB));
 }
 
+/**
+ * @brief Executes a set of moves based on the defined t_moves structure, 
+ * finalized by a push to stack a.
+ * @param moves The structure containing the moves.
+ * @param dbstack The address of the double stack.
+ * @return The number of moves executed.
+*/
 static int	push_to_a(t_moves moves, t_dbstack *dbstack)
 {
 	return (do_moves(moves, dbstack) + do_op(dbstack, PA));
 }
 
-static int	sort_last_3(t_dbstack *dbstack)
+/**
+ * @brief Sorts 3 numbers in stack a.
+ * @warning This function expects stack a to have exactly
+ * 3 elements.
+ * @param dbstack The address of the double stack.
+ * @return The number of moves executed.
+*/
+static int	sort_3(t_dbstack *dbstack)
 {
 	int	*a;
 	int	ops;
@@ -59,6 +60,11 @@ static int	sort_last_3(t_dbstack *dbstack)
 	return (ops);
 }
 
+/**
+ * @brief Rotates stack a till it is sorted.
+ * @param dbstack The address of the double stack.
+ * @return The number of moves executed.
+*/
 static int	rotate_a_till_sorted(t_dbstack *dbstack)
 {
 	int	ops;
@@ -73,6 +79,11 @@ static int	rotate_a_till_sorted(t_dbstack *dbstack)
 	return (ops);
 }
 
+/**
+ * @brief Apllies the sorting algorithm.
+ * @param dbstack The address of the double stack.
+ * @return The number of moves executed.
+*/
 int	sort(t_dbstack *dbstack)
 {
 	int	ops;
@@ -85,7 +96,7 @@ int	sort(t_dbstack *dbstack)
 		ops += n_do_op(dbstack, PB, 2);
 	while (dbstack->a_size > 3)
 		ops += push_to_b(lowest_cost_a_to_b(dbstack), dbstack);
-	ops += sort_last_3(dbstack);
+	ops += sort_3(dbstack);
 	while (dbstack->b_size)
 		ops += push_to_a(lowest_cost_b_to_a(dbstack), dbstack);
 	ops += rotate_a_till_sorted(dbstack);

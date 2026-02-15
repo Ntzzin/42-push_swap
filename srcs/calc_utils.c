@@ -6,29 +6,11 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 14:39:35 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/14 14:30:29 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/15 15:10:23 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <utils.h>
-
-/**
- * @param dbstack The address of the double stack.
- * @return The absolute position of the biggest number in
- * stack b.
- */
-int	get_b_max(t_dbstack *dbstack)
-{
-	int	i;
-	int	max;
-
-	i = 0;
-	max = 0;
-	while (++i < dbstack->b_size)
-		if (dbstack->stacks[i] > dbstack->stacks[max])
-			max = i;
-	return (max);
-}
 
 /**
  * @param dbstack The address of the double stack.
@@ -49,27 +31,21 @@ int	get_a_min(t_dbstack *dbstack)
 }
 
 /**
- * @brief Search for the predecessor of a number at @p idx in stack b.
  * @param dbstack The address of the double stack.
- * @param idx The absolute index within the underlying stacks array.
- * @return The absolute position of the predecessor, if no 
- * predecessor is found, the biggest number will be returned instead.
+ * @return The absolute position of the biggest number in
+ * stack b.
  */
-int	get_b_predecessor(t_dbstack *dbstack, int idx)
+int	get_b_max(t_dbstack *dbstack)
 {
 	int	i;
-	int	pre;
-	int	*s;
+	int	max;
 
-	i = -1;
-	pre = -1;
-	s = dbstack->stacks;
+	i = 0;
+	max = 0;
 	while (++i < dbstack->b_size)
-		if (s[i] < dbstack->stacks[idx] && (pre == -1 || s[i] > s[pre]))
-			pre = i;
-	if (pre == -1)
-		pre = get_b_max(dbstack);
-	return (pre);
+		if (dbstack->stacks[i] > dbstack->stacks[max])
+			max = i;
+	return (max);
 }
 
 /**
@@ -96,61 +72,26 @@ int	get_a_successor(t_dbstack *dbstack, int idx)
 	return (suc);
 }
 
-
 /**
- * @brief Converts an absolute index @p idx into the its relative position
- * in stack a.
+ * @brief Search for the predecessor of a number at @p idx in stack b.
  * @param dbstack The address of the double stack.
  * @param idx The absolute index within the underlying stacks array.
- * @return The relative position in stack a.
-*/
-int	pos_in_a(t_dbstack *dbstack, int idx)
+ * @return The absolute position of the predecessor, if no 
+ * predecessor is found, the biggest number will be returned instead.
+ */
+int	get_b_predecessor(t_dbstack *dbstack, int idx)
 {
-	return (idx - dbstack->b_size);
-}
+	int	i;
+	int	pre;
+	int	*s;
 
-/**
- * @brief Converts an absolute index @p idx into the its relative position
- * in stack b.
- * @param dbstack The address of the double stack.
- * @param idx The absolute index within the underlying stacks array.
- * @return The relative position in stack b.
-*/
-int	pos_in_b(t_dbstack *dbstack, int idx)
-{
-	return (dbstack->b_size - 1 - idx);
-}
-
-/**
- * @brief Calculates the amount of rotations needed in order to bring
- * a number at @p idx to the top of stack a.
- * @param dbstack The address of the double stack.
- * @param idx The absolute index within the underlying stacks array.
- * @return The amount of rotations needed (positive or negative), for instance the 
- * value is positive for forward rotations and negative for reverse rotations, always
- * choosing the path that will lead to the smallest count of |rotations|. 
-*/
-int	r_to_top_a(t_dbstack *dbstack, int idx)
-{
-	idx = pos_in_a(dbstack, idx);
-	if (idx > dbstack->a_size / 2)
-		return (idx - dbstack->a_size);
-	return (idx);
-}
-
-/**
- * @brief Calculates the amount of rotations needed in order to bring
- * a number at @p idx to the top of stack b.
- * @param dbstack The address of the double stack.
- * @param idx The absolute index within the underlying stacks array.
- * @return The amount of rotations needed (positive or negative), for instance the 
- * value is positive for forward rotations and negative for reverse rotations, always
- * choosing the path that will lead to the smallest count of |rotations|. 
-*/
-int	r_to_top_b(t_dbstack *dbstack, int idx)
-{
-	idx = pos_in_b(dbstack, idx);
-	if (idx > dbstack->b_size / 2)
-		return (idx - dbstack->b_size);
-	return (idx);
+	i = -1;
+	pre = -1;
+	s = dbstack->stacks;
+	while (++i < dbstack->b_size)
+		if (s[i] < dbstack->stacks[idx] && (pre == -1 || s[i] > s[pre]))
+			pre = i;
+	if (pre == -1)
+		pre = get_b_max(dbstack);
+	return (pre);
 }

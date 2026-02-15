@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/08 14:46:20 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/14 15:07:55 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/15 15:23:58 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@
  * of the target on stack b.
  * @return The data about the moves to be done.
  */
-t_moves	moves(t_dbstack *dbstack, int idx, int (*calc_a_target)(t_dbstack *, int),
-		int (*calc_b_target)(t_dbstack *, int))
+t_moves	moves(t_dbstack *dbstack, int idx,
+	int (*calc_a_target)(t_dbstack *, int),
+	int (*calc_b_target)(t_dbstack *, int))
 {
 	t_moves	moves;
 	int		a;
@@ -50,6 +51,32 @@ t_moves	moves(t_dbstack *dbstack, int idx, int (*calc_a_target)(t_dbstack *, int
 	moves.a_rtt -= moves.s_rtt;
 	moves.b_rtt -= moves.s_rtt;
 	return (moves);
+}
+
+/**
+ * @brief Executes a set of moves based on the defined t_moves structure.
+ * @param moves The structure containing the moves.
+ * @param dbstack The address of the double stack.
+ * @return The number of moves executed.
+*/
+int	do_moves(t_moves moves, t_dbstack *dbstack)
+{
+	int	ops;
+
+	ops = 0;
+	if (moves.a_rtt > 0)
+		ops += n_do_op(dbstack, RA, moves.a_rtt);
+	else
+		ops += n_do_op(dbstack, RRA, -moves.a_rtt);
+	if (moves.b_rtt > 0)
+		ops += n_do_op(dbstack, RB, moves.b_rtt);
+	else
+		ops += n_do_op(dbstack, RRB, -moves.b_rtt);
+	if (moves.s_rtt > 0)
+		ops += n_do_op(dbstack, RR, moves.s_rtt);
+	else
+		ops += n_do_op(dbstack, RRR, -moves.s_rtt);
+	return (ops);
 }
 
 /**
