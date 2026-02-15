@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 14:39:35 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/15 15:24:20 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/15 16:10:03 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static int	sort_3(t_dbstack *dbstack)
 
 	a = &(dbstack->stacks[dbstack->b_size]);
 	ops = 0;
-	ft_printf("\e[0;36mSorting the 3 last elements in a...\e[0m\n");
 	if (a[0] > a[1] && a[0] > a[2])
 		ops += do_op(dbstack, RA);
 	else if (a[1] > a[0] && a[1] > a[2])

@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:47:15 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/15 15:23:38 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/15 16:12:29 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define UTILS_H
 
 # include <ft_printf.h>
+# include <get_next_line.h>
 # include <limits.h>
 # include <stdlib.h>
 
@@ -60,6 +61,10 @@ void		rb(t_dbstack *dbstack);
 void		rrb(t_dbstack *dbstack);
 void		pb(t_dbstack *dbstack);
 
+void		ss(t_dbstack *dbstack);
+void		rr(t_dbstack *dbstack);
+void		rr(t_dbstack *dbstack);
+
 int			do_op(t_dbstack *dbstack, char *op);
 int			n_do_op(t_dbstack *dbstack, char *op, int n);
 
@@ -89,10 +94,8 @@ int			min(int a, int b);
 void		exit_and_free(void *p);
 
 /*───────────────────────────────────────────
-				Test functions
+				Bonus functions
 ─────────────────────────────────────────────*/
-void		print_moves(t_moves moves);
-void		printall(t_dbstack *s);
 int			is_sorted(t_dbstack *dbstack);
 
 #endif
