@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:47:15 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/15 16:12:29 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/15 16:56:16 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int			sort(t_dbstack *dbstack);
 /*───────────────────────────────────────────
 				Aux functions
 ─────────────────────────────────────────────*/
-int			ft_atoi(char **nptr);
+int			parse(char **nptr);
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_abs(int n);
 int			min(int a, int b);

@@ -6,7 +6,7 @@
 #    By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/19 15:58:54 by nado-nas          #+#    #+#              #
-#    Updated: 2026/02/15 16:14:06 by nado-nas         ###   ########.fr        #
+#    Updated: 2026/02/15 18:46:49 by nado-nas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ INCLUDE = -Iincludes
 CFLAGS = -Wall -Wextra -Werror
 
 SRC = srcs/push_swap.c srcs/misc.c srcs/stack_utils.c srcs/ft_atoi.c srcs/a_ops.c srcs/b_ops.c srcs/calc_utils.c srcs/dbstack.c srcs/sort.c srcs/ft_strcmp.c srcs/lowest_cost.c srcs/r_to_top.c
-BSRC = srcs/checker.c srcs/misc.c srcs/stack_utils.c srcs/ft_atoi.c srcs/a_ops.c srcs/b_ops.c srcs/dbstack.c srcs/others.c srcs/ft_strcmp.c srcs/is_sorted.c
+BSRC = srcs/checker.c srcs/misc.c srcs/stack_utils.c srcs/ft_atoi.c srcs/a_ops.c srcs/b_ops.c srcs/dbstack.c srcs/ft_strcmp.c srcs/is_sorted.c
 OBJ = $(SRC:.c=.o)
 BOBJ = $(BSRC:.c=.o)
 
@@ -56,7 +56,7 @@ check_norm:
 clean:
 	$(MAKE_PRINTF) clean
 	$(MAKE_GNL) clean
-	rm -f $(OBJ)
+	rm -f $(OBJ) $(BOBJ)
 
 fclean: clean
 	$(MAKE_PRINTF) fclean

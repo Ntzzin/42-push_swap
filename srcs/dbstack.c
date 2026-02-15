@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 12:51:12 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/12 16:23:11 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/15 16:57:31 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	get_size(char **nums)
 		tmp = nums[i];
 		while (*tmp)
 		{
-			ft_atoi(&tmp);
+			parse(&tmp);
 			n++;
 		}
 		i++;
@@ -64,7 +64,7 @@ static void	fill(t_dbstack *dbstack, char **nums)
 		tmp = nums[i];
 		while (*tmp)
 		{
-			save(dbstack, j, ft_atoi(&tmp));
+			save(dbstack, j, parse(&tmp));
 			j++;
 		}
 		i++;

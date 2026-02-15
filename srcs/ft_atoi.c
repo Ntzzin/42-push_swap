@@ -6,13 +6,22 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 11:02:32 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/06 16:34:29 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/15 17:04:29 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <utils.h>
 
-int	ft_atoi(char **nptr)
+/**
+ * @brief Parses an string respecting the push_swap's 
+ * specifications. Basically this function mimics atoi(3) 
+ * with extra functionalities, for instance it quits if the
+ * passed string is not a valid number input for atoi(3).
+ * @param nptr The address of the string.
+ * @return The number that the string represents
+ * @warning This function 
+*/
+int	parse(char **nptr)
 {
 	int		sign;
 	long	res;

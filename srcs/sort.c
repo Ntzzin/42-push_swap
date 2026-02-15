@@ -6,7 +6,7 @@
 /*   By: nado-nas <nado-nas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 14:39:35 by nado-nas          #+#    #+#             */
-/*   Updated: 2026/02/15 16:10:03 by nado-nas         ###   ########.fr       */
+/*   Updated: 2026/02/15 16:58:09 by nado-nas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,8 @@ static int	rotate_a_till_sorted(t_dbstack *dbstack)
 int	sort(t_dbstack *dbstack)
 {
 	int	ops;
-	int	min;
-	int	tmp;
 
 	ops = 0;
-	min = 0;
 	if (dbstack->a_size >= 5)
 		ops += n_do_op(dbstack, PB, 2);
 	while (dbstack->a_size > 3)
